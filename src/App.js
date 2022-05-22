@@ -9,12 +9,45 @@ function App(props) {
     const newTask = { id: `todo-${nanoid()}`, name: name, completed: false};
     setTasks([...tasks, newTask]);
   }
-
+  
   const [tasks, setTasks] = useState(props.tasks);
   
-  const taskList = tasks.map(task => {
-    return <Todo key={task.id} id={task.id} name={task.name} completed={task.completed} />;
-  });
+  function toggleTaskCompleted(id) {
+    const updatedTasks = tasks.map(task => {
+      if (id === task.id) {
+        return {...task, completed: !task.completed}
+      }
+      return task;
+    });
+    setTasks(updatedTasks);
+  }
+
+  function deleteTask(id) {
+    const remainingTasks = tasks.filter(task => id !== task.id);
+    setTasks(remainingTasks);
+  }
+
+  function editTask(id, newName) {
+    const newTasks = taskList.map(task => {
+      if(id === task.id) {
+        return {...task, name: newName}
+      }
+      return task;
+    });
+    setTasks(newTasks);
+  }
+
+  const taskList = tasks.map(task => (
+    <Todo
+      key={task.id}
+      id={task.id}
+      name={task.name}
+      completed={task.completed}
+      toggleTaskCompleted={toggleTaskCompleted}
+      deleteTask={deleteTask}
+      editTask={editTask}
+    />
+  ));
 
   const tasksNoun = taskList.length !== 1 ? 'tasks' : 'task';
   const headingText = `${taskList.length} ${tasksNoun} remaining`;
