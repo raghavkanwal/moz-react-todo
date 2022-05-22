@@ -28,9 +28,9 @@ function App(props) {
   }
 
   function editTask(id, newName) {
-    const newTasks = taskList.map(task => {
+    const newTasks = tasks.map(task => {
       if(id === task.id) {
-        return {...task, name: newName}
+        task.name = newName;
       }
       return task;
     });
